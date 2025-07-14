@@ -1,30 +1,70 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import axios from 'axios';
 
 function App() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [status, setStatus] = useState('');
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setStatus('Sending...');
+
     try {
-      const res = await axios.post('http://your-ec2-ip/api/feedback', form);
-      alert('Feedback submitted!');
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('Feedback submitted successfully!');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        setStatus('Failed to submit feedback.');
+      }
     } catch (err) {
-      console.error(err);
-      alert('Submission failed');
+      setStatus('Error sending feedback.');
     }
   };
 
   return (
-    <div className="container">
+    <div className="App">
       <h2>Feedback Form</h2>
       <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Name" onChange={e => setForm({ ...form, name: e.target.value })} />
-        <input type="email" placeholder="Email" onChange={e => setForm({ ...form, email: e.target.value })} />
-        <textarea placeholder="Message" onChange={e => setForm({ ...form, message: e.target.value })} />
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        /><br/>
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        /><br/>
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          value={formData.message}
+          onChange={handleChange}
+          required
+        /><br/>
         <button type="submit">Submit</button>
       </form>
+      <p>{status}</p>
     </div>
   );
 }

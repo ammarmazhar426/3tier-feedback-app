@@ -1,22 +1,25 @@
-.container {
-  max-width: 500px;
-  margin: 50px auto;
-  padding: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+.App {
+  text-align: center;
+  margin-top: 50px;
 }
+
 form {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  text-align: left;
+  margin-top: 20px;
 }
+
 input, textarea {
-  margin-bottom: 1rem;
-  padding: 0.75rem;
+  display: block;
+  margin: 10px 0;
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
 }
+
 button {
-  background-color: #0066cc;
-  color: white;
-  padding: 0.75rem;
-  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
 }
 
