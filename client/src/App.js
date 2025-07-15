@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App">
-      <h2>Feedback Form</h2>
+      <h2>Feedback Form Changes</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
